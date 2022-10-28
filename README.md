@@ -6,7 +6,7 @@ Kelompok ITB07: <br>
 5027201042 Ilham Muhammad Sakti <br>
 5027201067 Naufal Ramadhan <br>
 
-Soal:
+## Soal:
 
 Twilight (〈黄昏 (たそがれ) 〉, <Tasogare>) adalah seorang mata-mata yang berasal dari negara Westalis. Demi menjaga perdamaian antara Westalis dengan Ostania, Twilight dengan nama samaran Loid Forger (ロイド・フォージャー, Roido Fōjā) di bawah organisasi WISE menjalankan operasinya di negara Ostania dengan cara melakukan spionase, sabotase, penyadapan dan kemungkinan pembunuhan. Berikut adalah peta dari negara Ostania:
 
@@ -67,6 +67,7 @@ apt-get update
 apt-get install bind9 -y 
 ```
 ![Berlint sebagai DNS Slave](./images/jawabanSoal1BerlintSebagaiDnsSlave.png)
+
 **Eden sebagai Web Server**
 ```
 echo "nameserver 192.168.122.1" > /etc/resolv.conf
@@ -94,7 +95,7 @@ echo 'nameserver 192.168.122.1' > /etc/resolv.conf
 Untuk mempermudah mendapatkan informasi mengenai misi dari Handler, bantulah Loid membuat website utama dengan akses wise.yyy.com dengan alias www.wise.yyy.com pada folder wise
 
 ### Jawaban Soal 2:
-**Server WISE**
+**Server WISE** <br>
 Melakukan konfigurasi terhadap file `/etc/bind/named.conf.local` dengan menambahkan
 ```
 zone "wise.ITB07.com" {  
@@ -127,18 +128,19 @@ echo "nameserver 10.48.2.2 > /etc/resolv.conf
 
 **TESTING**
 
-#1 ping wise.ITB07.com 
-![testing1](./images/jawabanSoal2Testing1.png)
-#2 ping www.wise.ITB07.com
-![testing2](./images/jawabanSoal2Testing2.png)
-#3 host -t CNAME www.wise.ITB07.com
-![testing3](./images/jawabanSoal2Testing3.png)
+#1 ping wise.ITB07.com <br>
+![testing1](./images/jawabanSoal2Testing1.png) <br>
+#2 ping www.wise.ITB07.com <br>
+![testing2](./images/jawabanSoal2Testing2.png) <br>
+#3 host -t CNAME www.wise.ITB07.com <br>
+![testing3](./images/jawabanSoal2Testing3.png) <br>
 
 ## Soal 3:
 Setelah itu ia juga ingin membuat subdomain eden.wise.yyy.com dengan alias www.eden.wise.yyy.com yang diatur DNS-nya di WISE dan mengarah ke Eden 
 
 ### Jawaban Soal 3:
-Server WISE
+**Server WISE**<br>
+
 Melakukan Edit pada file `/etc/bind/kaizoku/franky.t07.com` menjadi seperti berikut:
 ```
 $TTL    604800  
@@ -159,20 +161,21 @@ Melakukan restart sevice bind9 dengan `service bind9 restart`.
 
 **TESTING**
 
-#1 ping eden.wise.ITB07.com
-![testing1](./images/jawabanSoal3Testing1.png)
-#2 ping www.eden.wise.ITB07.com
-![testing2](./images/jawabanSoal3Testing2.png)
-#3 host -t A eden.wise.ITB07.com
-![testing3](./images/jawabanSoal3Testing3.png)
-#4 host -t CNAME www.eden.wise.ITB07.com
-![testing4](./images/jawabanSoal3Testing4.png)
+#1 ping eden.wise.ITB07.com <br>
+![testing1](./images/jawabanSoal3Testing1.png) <br>
+#2 ping www.eden.wise.ITB07.com <br>
+![testing2](./images/jawabanSoal3Testing2.png) <br>
+#3 host -t A eden.wise.ITB07.com <br>
+![testing3](./images/jawabanSoal3Testing3.png) <br>
+#4 host -t CNAME www.eden.wise.ITB07.com <br>
+![testing4](./images/jawabanSoal3Testing4.png) <br>
 
 ## Soal 4:
 Buat juga reverse domain untuk domain utama
 
 ### Jawaban Soal 4:
-Server WISE
+**Server WISE** <br>
+
 Edit file `/etc/bind/named.conf.local` menjadi sebagai berikut:
 ```zone "wise.ITB07.com" {  
         type master;  
@@ -201,5 +204,5 @@ Melakukan restart sevice bind9 dengan `service bind9 restart`.
 
 **TESTING**
 
-#1 host -t PTR 10.48.2.2
-![testing1](./images/jawabanSoal4Testing1.png)
+#1 host -t PTR 10.48.2.2 <br>
+![testing1](./images/jawabanSoal4Testing1.png) <br>
