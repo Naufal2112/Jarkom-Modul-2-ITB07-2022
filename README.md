@@ -442,7 +442,7 @@ Melakukan restart service apache2 dengan `service apache2 restart`
 
 ## Testing
 Kemudian melakukan testing dengan menggunakan <br> `lynx www.wise.ITB07.com/home` <br>
-![testing1](./images/) <br>
+![testing1](./images/JawabanSoal9Testing1) <br>
 
 ## Soal 10
 Setelah itu, pada subdomain `www.eden.wise.yyy.com`, Loid membutuhkan penyimpanan aset yang memiliki DocumentRoot pada /var/www/eden.wise.yyy.com
@@ -478,7 +478,7 @@ konfigurasi file `/var/www/eden.wise.ITB07.com/index.php` dengan `echo "<?php ec
 
 ## Testing
 Untuk membuktikan bahwa kita sudah membuat sebuah file index.php. Maka kita dapat melakukan testing lynx `www.eden.wise.ITB07.com` <br>
-![testing1](./images/) <br>
+![testing1](./images/JawabanSoal10Testing1) <br>
 
 ## Soal 11
 Akan tetapi, pada folder `/public`, Loid ingin hanya dapat melakukan directory listing saja
@@ -510,7 +510,7 @@ Kemudian melakukan `service apache2 restart`
 ## Testing
 Melakukan testing pada server client dengan menggunakan <br>
 `lynx www.eden.wise.ITB07.com/public` <br>
-![testing1](./images/) <br>
+![testing1](./images/JawabanSoal11Testing1) <br>
 
 ## Soal 12
 Tidak hanya itu, Loid juga ingin menyiapkan error file 404.html pada folder /error untuk mengganti error kode pada apache
@@ -548,7 +548,7 @@ Kemudian lakukan `service apache2 restart`
 ## Testing
 Kemudian melakukan testing pada web client <br>
 `lynx www.eden.wise.ITB07.com/HOHOHO` <br>
-![testing1](./images/) <br>
+![testing1](./images/JawabanSoal12Testing1) <br>
 
 ## Soal 13
 Loid juga meminta Franky untuk dibuatkan konfigurasi virtual host. Virtual host ini bertujuan untuk dapat mengakses file asset `www.eden.wise.yyy.com/public/js` menjadi `www.eden.wise.yyy.com/js`
