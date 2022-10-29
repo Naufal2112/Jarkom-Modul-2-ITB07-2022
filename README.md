@@ -206,3 +206,196 @@ Melakukan restart sevice bind9 dengan `service bind9 restart`.
 
 #1 host -t PTR 10.48.2.2 <br>
 ![testing1](./images/jawabanSoal4Testing1.png) <br>
+
+## Soal 5
+Agar dapat tetap dihubungi jika server WISE bermasalah, buatlah juga Berlint sebagai DNS Slave untuk domain utama 
+
+### Jawaban Soal 5
+**Server WISE** <br>
+
+lakukan konfigurasi pada file `/etc/bind/named.conf.local` sebagai berikut untuk melakukan konfigurasi DNS Slave yang mengarah ke Berlint:
+```zone "wise.ITB07.com" {
+        type master;
+        notify yes;
+        also-notify {10.48.3.2;}; //IP Berlint
+        allow-transfer  {10.48.3.2;}; //ip berlint
+        file "/etc/bind/wise/wise.ITB07.com";
+};
+
+zone "2.48.10.in-addr.arpa" {
+        type master;
+        file "/etc/bind/wise/2.48.10.in-addr.arpa";
+};
+```
+Melakukan restart sevice bind9 dengan `service bind9 restart`
+
+**Server Berlint** 
+```zone "wise.ITB07.com" {
+        type slave;
+        masters { 10.48.2.2; }; // Masukan IP wise tanpa tanda petik
+        file "/var/lib/bind/wise.ITB07.com";
+};
+```
+Melakukan restart sevice bind9 dengan `service bind9 restart`
+
+**TESTING**
+
+#1 Melakukan stop service bind9 di WISE <br>
+![testing1](./images/jawabanSoal5Testing1.jpeg) <br>
+
+#2 Melakukan ping dengan server SSS <br>
+![testing1](./images/jawabanSoal5Testing2.jpeg) <br>
+
+## Soal 6
+Karena banyak informasi dari Handler, buatlah subdomain yang khusus untuk operation yaitu operation.wise.yyy.com dengan alias www.operation.wise.yyy.com yang didelegasikan dari WISE ke Berlint dengan IP menuju ke Eden dalam folder operation 
+
+### Jawaban Soal 6
+**Server WISE** <br>
+
+Melakukan konfigurasi pada /etc/bind/wise/wise.ITB07.com
+```
+$TTL    604800
+@       IN      SOA     wise.ITB07.com. root.wise.ITB07.com. (
+                        2021100401      ; Serial
+                        604800          ; Refresh
+                        86400           ; Retry
+                        2419200         ; Expire
+                        604800 )        ; Negative Cache TTL
+;
+@               IN      NS      wise.ITB07.com.
+@               IN      A       10.48.3.3 ; IP eden
+www             IN      CNAME   wise.ITB07.com.
+eden            IN      A       10.48.3.3 ; IP eden
+www.eden        IN      CNAME   eden.wise.ITB07.com.
+ns1             IN      A       10.48.3.2 ; ip berlint
+operation       IN      NS      ns1
+```
+Kemudian edit file `/etc/bind/named.conf.options` dan comment `dnssec-validation auto;` dan tambahkan baris berikut pada `/etc/bind/named.conf.options`
+```
+allow-query{any;};  
+```
+Kemudian edit file `/etc/bind/named.conf.local` menjadi seperti:
+```
+zone "wise.ITB07.com" {
+        type master;
+        //notify yes;
+        //also-notify {10.48.3.2;}; //IP Berlint
+        allow-transfer  {10.48.3.2;}; //ip berlint
+        file "/etc/bind/wise/wise.ITB07.com";
+};
+
+zone "2.48.10.in-addr.arpa" {
+        type master;
+        file "/etc/bind/wise/2.48.10.in-addr.arpa";
+};
+```
+
+Melakukan restart sevice bind9 dengan `service bind9 restart`
+
+**Server Berlint**
+Edit file `/etc/bind/named.conf.options` dan comment `dnssec-validation auto;` dan tambahkan baris berikut pada `/etc/bind/named.conf.options` 
+``` 
+allow-query{any;}; 
+```
+kemudian edit file `/etc/bind/named.conf.local` untuk delegasi `operation.wise.yyy.com` 
+``` zone "wise.ITB07.com" {
+        type slave;
+        masters { 10.48.2.2; }; // Masukan IP wise tanpa tanda petik
+        file "/var/lib/bind/wise.ITB07.com";
+};
+
+zone "operation.wise.ITB07.com"{
+        type master;
+        file "/etc/bind/operation/operation.wise.ITB07.com";
+};
+```
+buat sebuah direktori `mkdir /etc/bind/operation` dan lakukan konfigurasi pada file `/etc/bind/operation/operation.wise.ITB07.com`
+```
+$TTL    604800
+@       IN      SOA     operation.wise.ITB07.com. root.operation.wise.ITB07.com. (
+                       2021100401      ; Serial
+                        604800         ; Refresh
+                        86400         ; Retry
+                        2419200         ; Expire
+                        604800 )       ; Negative Cache TTL
+;
+@               IN      NS      operation.wise.ITB07.com.
+@               IN      A       10.48.3.3       ;ip eden
+www             IN      CNAME   operation.wise.ITB07.com.
+```
+Melakukan restart sevice bind9 dengan `service bind9 restart`
+
+**TESTING**
+
+#1 Melakukan testing ping operation.wise.ITB07.com dan www.operartion.wise.ITB07.com<br>
+![testing1](./images/jawabanSoal6Testing1.jpeg) <br>
+
+## Soal 7
+Untuk informasi yang lebih spesifik mengenai Operation Strix, buatlah subdomain melalui Berlint dengan akses strix.operation.wise.yyy.com dengan alias www.strix.operation.wise.yyy.com yang mengarah ke Eden 
+
+### Jawaban Soal 7
+**Server Berlint** <br>
+konfigurasi file `/etc/bind/operation/operation.wise.ITB07.com` dengan
+```
+$TTL    604800
+@       IN      SOA     operation.wise.ITB07.com. root.operation.wise.ITB07.com. (       
+                        2021100401      ; Serial
+                        604800         ; Refresh
+                        86400         ; Retry
+                        2419200         ; Expire
+                        604800 )       ; Negative Cache TTL
+;
+@               IN      NS      operation.wise.ITB07.com.
+@               IN      A       10.48.3.3       ;ip eden
+www             IN      CNAME   operation.wise.ITB07.com.
+strix           IN      A       10.48.3.3       ;ip eden
+www.strix       IN      CNAME   operation.wise.ITB07.com.
+```
+Melakukan restart sevice bind9 dengan `service bind9 restart`
+
+**TESTING**
+
+#1 Melakukan testing seperti pada gambar dibawah ini <br>
+![testing1](./images/jawabanSoal7Testing1.jpeg) <br>
+
+## Soal 8
+Setelah melakukan konfigurasi server, maka dilakukan konfigurasi Webserver. Pertama dengan webserver www.wise.yyy.com. Pertama, Loid membutuhkan webserver dengan DocumentRoot pada /var/www/wise.yyy.com 
+
+### Jawaban Soal 8
+**Server SSS** <br>
+Melakukan `apt-get update` dan menginstall lynx dengan cara
+```
+apt-get update
+apt-get install lynx -y
+```
+**Server Eden** 
+Melakukan instalasi Apache, php, openssl untuk melakukan download ke website https dengan cara
+```
+apt-get install apache2 -y
+service apache2 start
+apt-get install php -y
+apt-get install libapache2-mod-php7.0 -y
+service apache2 
+apt-get install ca-certificates openssl -y
+```
+konfigurasi file `/etc/apache2/sites-available/wise.ITB07.com.conf`. Lalu melakukan DcumentRoot diletakkan di /var/www/wise.ITB07.com. Jangan lupa untuk menambah servername dan serveralias
+```
+<VirtualHost *:80>
+
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/wise.ITB07.com
+        ServerName wise.ITB07.com
+        ServerAlias www.wise.ITB07.com
+</VirtualHost>
+```
+Lalu lakukan membaut sebuah direkroti root untuk server franky.t07.com dan melakukan copy file content
+```
+apt install wget -y
+wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1S0XhL9ViYN7TyCj2W66BNEXQD2AAAw2e' -O /root/wise.zip
+unzip /root/wise.zip -d /root
+cp -r /root/wise/. /var/www/wise.ITB07.com
+service apache2 restart
+```
+**TESTING**
+#1 Melakukan testing pada lynx wise.ITB07.com dan lynx www.wise.ITB07.com <br>
+![testing1](./images/jawabanSoal8Testing1.jpeg) <br>
