@@ -214,7 +214,8 @@ Agar dapat tetap dihubungi jika server WISE bermasalah, buatlah juga Berlint seb
 **Server WISE** <br>
 
 lakukan konfigurasi pada file `/etc/bind/named.conf.local` sebagai berikut untuk melakukan konfigurasi DNS Slave yang mengarah ke Berlint:
-```zone "wise.ITB07.com" {
+```
+zone "wise.ITB07.com" {
         type master;
         notify yes;
         also-notify {10.48.3.2;}; //IP Berlint
@@ -230,7 +231,8 @@ zone "2.48.10.in-addr.arpa" {
 Melakukan restart sevice bind9 dengan `service bind9 restart`
 
 **Server Berlint** 
-```zone "wise.ITB07.com" {
+```
+zone "wise.ITB07.com" {
         type slave;
         masters { 10.48.2.2; }; // Masukan IP wise tanpa tanda petik
         file "/var/lib/bind/wise.ITB07.com";
@@ -292,7 +294,7 @@ zone "2.48.10.in-addr.arpa" {
 
 Melakukan restart sevice bind9 dengan `service bind9 restart`
 
-**Server Berlint**
+**Server Berlint** <br>
 Edit file `/etc/bind/named.conf.options` dan comment `dnssec-validation auto;` dan tambahkan baris berikut pada `/etc/bind/named.conf.options` 
 ``` 
 allow-query{any;}; 
@@ -368,7 +370,7 @@ Melakukan `apt-get update` dan menginstall lynx dengan cara
 apt-get update
 apt-get install lynx -y
 ```
-**Server Eden** 
+**Server Eden** <br>
 Melakukan instalasi Apache, php, openssl untuk melakukan download ke website https dengan cara
 ```
 apt-get install apache2 -y
@@ -397,5 +399,6 @@ cp -r /root/wise/. /var/www/wise.ITB07.com
 service apache2 restart
 ```
 **TESTING**
+
 #1 Melakukan testing pada lynx wise.ITB07.com dan lynx www.wise.ITB07.com <br>
 ![testing1](./images/jawabanSoal8Testing1.jpeg) <br>
