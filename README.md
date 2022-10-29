@@ -141,7 +141,7 @@ Setelah itu ia juga ingin membuat subdomain eden.wise.yyy.com dengan alias www.e
 ### Jawaban Soal 3:
 **Server WISE**<br>
 
-Melakukan Edit pada file `/etc/bind/kaizoku/franky.t07.com` menjadi seperti berikut:
+Melakukan Edit pada file `/etc/bind/wise/wise.ITB07.com` menjadi seperti berikut:
 ```
 $TTL    604800  
 @       IN      SOA     wise.ITB07.com. root.wise.ITB07.com. (  
@@ -177,7 +177,8 @@ Buat juga reverse domain untuk domain utama
 **Server WISE** <br>
 
 Edit file `/etc/bind/named.conf.local` menjadi sebagai berikut:
-```zone "wise.ITB07.com" {  
+```
+zone "wise.ITB07.com" {  
         type master;  
         file "/etc/bind/wise/wise.ITB07.com";  
 };
@@ -390,7 +391,7 @@ konfigurasi file `/etc/apache2/sites-available/wise.ITB07.com.conf`. Lalu melaku
         ServerAlias www.wise.ITB07.com
 </VirtualHost>
 ```
-Lalu lakukan membaut sebuah direkroti root untuk server franky.t07.com dan melakukan copy file content
+Lalu lakukan membaut sebuah direkroti root untuk server wise.ITB07.com dan melakukan copy file content
 ```
 apt install wget -y
 wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1S0XhL9ViYN7TyCj2W66BNEXQD2AAAw2e' -O /root/wise.zip
